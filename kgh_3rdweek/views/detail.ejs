@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+    <title>Detail Page</title>
+
+    <script>
+        function dlt() {
+            const id = $("#id").val();
+            const borderPwd = $('#borderPwd').val()
+            $.ajax({
+                type: "POST",
+                url: '/dlt',
+                data: {
+                    id: id
+                },
+                success: function (result, not) {
+                    if (result && borderPwd === $('#password').val()) {
+                        alert('삭제되었습니다.')
+                        location.href="/"
+                    } else {
+                        alert('비밀번호가 다릅니다.')
+                    }
+                }
+            })
+        }
+
+        function revise() {
+            const id = $("#_id").val();
+            const borderPwd = $('#borderPwd').val()
+            $.ajax({
+                type: "POST",
+                url: '/:id',
+                data: {
+                    id: id,
+                    borderPwd: borderPwd
+                },
+                success: function (result, not) {
+                    if (result && borderPwd === $('#password').val()) {
+                        alert('수정되었습니다.')
+                        location.href="/"
+                    } else {
+                        alert('비밀번호가 다릅니다.')
+                    }
+                }
+            })
+        }
+
+
+    </script>
+
+
+</head>
+
+<body>
+    <form action="/detail/<%= detail._id%>" method="post">
+        <div class="wrap">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">제목</label>
+                <input type="text" name="name" class="form-control" id="example2" placeholder=""
+                    value="<%= detail.title %>">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">작성자명</label>
+                <input type="text" name="name" class="form-control" id="example2" placeholder=""
+                    value="<%= detail.author %>">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">내용</label>
+                <textarea class="form-control" name="desc" id="example3" rows="4"
+                    value="<%= detail.desc %>"><%= detail.desc %></textarea>
+            </div>
+            <div class="label">
+                <label for="exampleFormControlInput1" style="font-weight: bold;">비밀 번호 : </label>
+                <input class="inputPwd" name="password" id="borderPwd" type="number" placeholder="비밀번호를 입력하세요" />
+            </div>
+            <button onclick="revise()" type="submit" class="btn btn-primary"> 수정하기 </button>
+            <button type="button" onclick="dlt()" class="btn btn-danger"> 삭제하기 </button>
+        </div>
+    </form>
+    <input type="hidden" id="id" value="<%=detail._id%>">
+    <input type="hidden" id="password" value="<%=detail.password%>">
+</body>
+
+</html>
